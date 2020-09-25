@@ -1,6 +1,8 @@
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
+//ahora le hice este cambio, te aparece?
+
 
 struct nodo{
 
