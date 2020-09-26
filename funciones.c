@@ -6,6 +6,8 @@
 //FUNCION 1
 //ingresa un nodo y lo ordena entre los nodos dependiendo del valor del entero que esta en ese nodo
 
+//Agrego este comentario
+
 void insertar_nodo(ptrNodo *ptrS)
 {	
 
