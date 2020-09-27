@@ -6,8 +6,10 @@
 int main ( void )
 {
   int fd ; /* Descriptor de archivo del puerto */
+  char leido_1 [8];
   
   struct termios oldtty , newtty ;
+  
 
   fd = open ("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NDELAY );
   if( fd == -1)
@@ -25,9 +27,12 @@ int main ( void )
   tcflush ( fd , TCIOFLUSH );
   for (;;)
     {
-      write (fd,"v",1);
+      read(fd, leido_1, 8);
+      
+      printf("\ntemp = %s ",leido_1);
+      
       tcdrain (fd);
-      sleep (2);
+      sleep (5);
     }
 
   close (fd);
