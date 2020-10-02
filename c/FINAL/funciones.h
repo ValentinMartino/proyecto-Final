@@ -45,7 +45,22 @@ int leer_puerto();
 * ptrNuevo para guardarle los valores de presion, temp, etc*/
 void leer_archivo(ptrNodo *, int);
 
+
 /*FUNCION 4:
+*
+* Esta funcion encuentra al mayor dato, ya sea temp, hum o pres
+* El entero que recibe es para especificar que va a encontrar
+* si la temp mayor o la pres mayor o la hum mayor*/
+int mayor_dato(ptrNodo, int);
+
+/*FUNCION 5:
+*
+* Esta funcion encuentra al menor dato, ya sea temp, hum o pres
+* El entero que recibe es para especificar que va a encontrar
+* si la temp menor o la pres menor o la hum menor*/
+int menor_dato(ptrNodo, int);
+
+/*FUNCION 6:
 *
 * Esta funcion es por si el usuario quiere tener un archivo 
 * para leercon los datos obtenidos. Recibe como parametro
@@ -53,9 +68,12 @@ void leer_archivo(ptrNodo *, int);
 void archivo_usuario(ptrNodo);
 
 
-
-
+/*FUNCION 7:
+*
+* Esta funcion muestra por pantalla los mismos datos que la
+* funcion archivo_usuario*/
 void mostrar(ptrNodo);
+
 
 
 #endif
