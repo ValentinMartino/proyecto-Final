@@ -6,8 +6,8 @@
 int main ( void )
 {
   int fd ; /* Descriptor de archivo del puerto */
-  char leido_1 [6], leido_2[6]; /*caracter para tomar los datos obtenidos del puerto serie*/
-  char basura [6];
+  unsigned char leido_1 [6]; /*caracter para tomar los datos obtenidos del puerto serie*/
+  char basura;
 
 
   FILE *archivo;
@@ -30,7 +30,7 @@ int main ( void )
 
      //abrimos el archivo y verificamos que no haya errores
 
-     archivo = fopen("Temperaturas.txt", "w");
+     archivo = fopen("temperaturas.txt", "w");
 		
      if(archivo == NULL)
        {
@@ -39,32 +39,43 @@ int main ( void )
        }
 
      tcflush ( fd , TCIOFLUSH );
+        
+	int ban = 0;
+	
+	write (fd , "s", 1);
+	sleep (1);
+	
+	while(ban < 2 )
+	{
+		read(fd, &basura, 1);
+		
+		if(basura == 's')
+			ban++;
+		else
+			ban = 0;
+			
+		printf("\n%c BAN = %i\n", basura, ban);
+				
+	}
+		
 
-     fprintf(archivo,"A continuacion se muestran las temperaturas listadas");
-
-     //ciclo infinito
-     for (int i = 0; i<5; i++)
+     for (int i = 0; i<6; i++)
        {
-	 if(i==0)
-	   read(fd, basura, 6);
-	 else
-	   {
-	     read(fd, leido_1, 6);
-	     // read(fd, leido_2, 6);
+       	
+       	if(i%3 == 0 && i != 0)
+         {
+         	printf("\n");
+         	fprintf(archivo, "\n");
+         }
+	 	read(fd, leido_1 , 5);
 
-	     //ingresamos las temperaturas al archivo de texto que creamos
-	 
-	     //	 fprintf(archivo,"\n- %s ", leido_1);
-      
-	     printf("\ntemp = %s ",leido_1);
-	     // printf("\nhum = %s",leido_2);
-	   }
-	 tcdrain (fd);
-      
-	 sleep (5);
+	 	fprintf(archivo,"%s\t",leido_1);
+	 	printf("%s\t",leido_1);    	
        }
 
      fclose(archivo); //cerramos el archivo de texto
      close (fd);
+     
+     putchar('\n');
      return 0;
 }

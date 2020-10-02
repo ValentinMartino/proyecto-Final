@@ -8,13 +8,17 @@ int main()
 	char c;
 	char arr[5];
 	
-	int i = 0;
-	int ban = 0;
+	int i = 0;//para indicar en que posicion de arr[] se guarde cada caracter
 	
-	float aux;
+	float aux; //variable auxiliar en donde se va a guardar temporalmente la humedad, la temp y la presion
+	
+	int ban = 0;//bandera que sirve para determinar que valor contiene la variable auxiliar
+		    // osea, si tiene el valor de la temperatura, de la humedad, etc
 
-	float temp,hum,pres;
 
+	float temp,hum,pres; //solo sirven de prueba mientras no tengamos la estructura de datos
+
+	/*se abre el archio donde estan guardados los datos obtenidos por los sensores*/
 	archivo = fopen("datos.txt","r"); 
 	if(archivo == NULL )
 	{
@@ -24,9 +28,9 @@ int main()
 	{
 	    while((c = fgetc(archivo)) != '\n')
 	        {
-			if(c == '\t')
-	           	{
-	                	i = 0;
+			if(c == '\t') // cuando ya termino de leer un dato (ya sea la temperatura, la humedad, etc)
+	           	{	      //porque los datos van a estar separados por un TAB '\t'
+	                	i = 0; 
 	            	} 
 	            	else
 	            	{
