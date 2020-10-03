@@ -15,3 +15,11 @@ TEMP	HUM	PRES	HORA
 24.50	83.60	88.20	23:00
 27.30	95.20	13.20	16:10
 25.50	23.62	15.20	16:00
+
+La mayor temperatura registrada es 44.50 y la ultima hora en la que se registro fue a las 18:50 hs
+La mayor humedad registrada es 99.99 y la ultima hora en la que se registro fue a las 16:10 hs
+La mayor presion registrada es 88.20 y la ultima hora en la que se registro fue a las 23:00 hs
+
+La menor temperatura registrada es 22.30 y la ultima hora en la que se registro fue a las 16:10 hs
+La menor humedad registrada es 13.60 y la ultima hora en la que se registro fue a las 16:00 hs
+La menor presion registrada es 13.20 y la ultima hora en la que se registro fue a las 16:10 hs

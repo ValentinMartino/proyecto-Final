@@ -3,8 +3,8 @@
 
 int main()
 {
-	ptrNodo ptrInicial = NULL;
-	ptrNodo ptrFinal = NULL;
+	//ptrNodo ptrInicial = NULL;
+	//ptrNodo ptrFinal = NULL;
 	
 	/*int cant_nodos;
 	int opcion; //para manejar las opciones en el do while
@@ -12,8 +12,8 @@ int main()
 	cant_nodos = leer_puerto();*/
 	
 	
-	for(int i = 0; i<11 ; i++)
-		ingresar_cola(&ptrInicial, &ptrFinal,i);
+	//for(int i = 0; i<11 ; i++)
+	//	ingresar_cola(&ptrInicial, &ptrFinal,i);
 		
 	
 	/*
@@ -49,8 +49,10 @@ int main()
 	
 	
 	//para ver como funca
-	mostrar(ptrInicial);
-	archivo_usuario(ptrInicial);
+	//mostrar(ptrInicial);
+	//archivo_usuario(ptrInicial);
+	
+	leer_puerto();
 	
 	
 	putchar('\n');
