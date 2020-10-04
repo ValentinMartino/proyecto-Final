@@ -77,7 +77,7 @@ int leer_puerto()
 
 	//abrimos el archivo y verificamos que no haya errores
 
-	archivo = fopen("datos.txt", "w");
+	archivo = fopen("Temperaturas.txt", "w");
 		
 	if(archivo == NULL)
 	{
@@ -380,7 +380,7 @@ int menor_dato(ptrNodo ptrS, int a)
 
 /*FUNCION 6*/
 
-void archivo_usuario(ptrNodo ptrS)
+int archivo_usuario(ptrNodo ptrS)
 {
 	FILE *archivo;
 	
@@ -406,6 +406,7 @@ void archivo_usuario(ptrNodo ptrS)
 	if(archivo == NULL)
 	{
 		printf("\nNo se pudo crear el archivo.\n");
+		return 0;
 	}
 	else
 	{
@@ -511,6 +512,8 @@ void archivo_usuario(ptrNodo ptrS)
 		
 	}
 
+
+	return 1; //si todo funciono bien
 }
 
 
@@ -624,6 +627,8 @@ void mostrar(ptrNodo ptrS)
 		
 		printf("\nLa menor presion registrada es %.2f y la ultima hora en la que se registro "
 		       "fue a las %s hs",p_me, h_p_me);
+		       
+		printf("\n\n\n");
 		
 	}
 	else
@@ -636,7 +641,35 @@ void mostrar(ptrNodo ptrS)
 
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
+/*FUNCION QUE NO ME GUSTA*/
 
+int contar()
+{
+	FILE *archivo; 
+	
+	int lineas = 0;
+	char c;
+	
+	/*se abre el archio donde estan guardados los datos obtenidos por los sensores*/
+	archivo = fopen("datos.txt","r"); 
+	if(archivo == NULL )
+	{
+	    	printf("\nno se pudo abrir el archivo");
+	}
+	else
+	{
+	    fseek(archivo,(n*24), SEEK_SET); //n*24 pq cada linea tiene 24 caracteres
+	    
+	    while((c = getchar()) != EOF)
+		{
+			if(c == '\n')
+				lineas++;
+		}
+	
+	}
+
+	return lineas;
+}
 
 
 

@@ -64,8 +64,9 @@ int menor_dato(ptrNodo, int);
 *
 * Esta funcion es por si el usuario quiere tener un archivo 
 * para leercon los datos obtenidos. Recibe como parametro
-* el inicio a la cola*/
-void archivo_usuario(ptrNodo);
+* el inicio a la cola. retorna 1 si los datos se guardaron
+* en el archivo, y cero si hubo algun error*/
+int archivo_usuario(ptrNodo);
 
 
 /*FUNCION 7:
@@ -73,6 +74,13 @@ void archivo_usuario(ptrNodo);
 * Esta funcion muestra por pantalla los mismos datos que la
 * funcion archivo_usuario*/
 void mostrar(ptrNodo);
+
+/* FUNCION QUE NO ME GUSTA:
+*
+* esta funcion cuenta las lineas del archivo datos.txt para 
+* saber cuantas veces llamar a la funcion de crear cola*/
+
+int contar(ptrNodo);
 
 
 
