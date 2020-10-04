@@ -88,9 +88,10 @@ int leer_puerto()
 	tcflush ( fd , TCIOFLUSH );
         
 	int ban = 0;
+	int ban2 = 0;
 	
 	write (fd , "s", 1);
-	sleep (1);
+	sleep (2);
 	
 	while(ban < 2 )
 	{
@@ -100,8 +101,14 @@ int leer_puerto()
 			ban++;
 		else
 		{
-			printf("\nban = %i",ban);
+			//printf("\nBan = %i",ban);
 			ban = 0;
+			ban2 ++;
+		}
+		if(ban2 == 3)
+		{
+			write (fd , "s", 1);
+			sleep (2);		
 		}		
 	}
 		
@@ -122,13 +129,7 @@ int leer_puerto()
 
 	 	fprintf(archivo,"%s\t",leido_1);
 	 	printf("%s\t",leido_1);  
-	 	
-	 	/*simulacion de la hora*/
-         	if(i%4 == 0 && i != 0)
-         	{
-         		fprintf(archivo,"15:24");  
-         		printf("15:24"); 
-         	}	
+	 		
 	}
 
 	fclose(archivo); //cerramos el archivo de texto
@@ -639,6 +640,168 @@ void mostrar(ptrNodo ptrS)
 }
 
 
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*FUNCION 8*/
+
+void grafico_temp(ptrNodo ptrS, int cant_nodos)
+{
+	ptrNodo ptrAnterior;
+	ptrNodo ptrActual;
+	
+	float temp[cant_nodos];
+	int i = 0; //iterador
+	
+	char programa[2000] = "python3 test_tem.py ";
+	char datos[30];
+	
+	ptrActual = ptrS;
+	ptrAnterior = NULL;
+	
+
+	if(ptrActual != NULL)
+	{
+		
+		while(ptrActual != NULL)
+		{
+			
+			temp[i] = ptrActual->temp;
+			
+			ptrAnterior = ptrActual;
+			ptrActual = ptrAnterior->ptrSig;
+			
+			i++;		
+		}
+							
+	}
+	else
+	{
+		printf("\nNo hay ningun dato que mostrar en el grafico.\n");
+	}
+
+
+	for(int j = 0; j < cant_nodos; j++)
+	{
+		sprintf(datos," %2.2f ",temp[j]);
+		strcat(programa, datos);
+	}	
+
+	system(programa);
+
+
+
+
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*FUNCION 9*/
+
+void grafico_hum(ptrNodo ptrS, int cant_nodos)
+{
+	ptrNodo ptrAnterior;
+	ptrNodo ptrActual;
+	
+	float hum[cant_nodos];
+	int i = 0; //iterador
+	
+	char programa[2000] = "python3 test_hum.py ";
+	char datos[30];
+	
+	ptrActual = ptrS;
+	ptrAnterior = NULL;
+	
+
+	if(ptrActual != NULL)
+	{
+		
+		while(ptrActual != NULL)
+		{
+			
+			hum[i] = ptrActual->hum;
+			
+			ptrAnterior = ptrActual;
+			ptrActual = ptrAnterior->ptrSig;
+			
+			i++;		
+		}
+							
+	}
+	else
+	{
+		printf("\nNo hay ningun dato que mostrar en el grafico.\n");
+	}
+
+
+	for(int j = 0; j < cant_nodos; j++)
+	{
+		sprintf(datos," %2.2f ",hum[j]);
+		strcat(programa, datos);
+	}	
+
+	system(programa);
+
+
+
+
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*FUNCION 10*/
+
+void grafico_pres(ptrNodo ptrS, int cant_nodos)
+{
+	ptrNodo ptrAnterior;
+	ptrNodo ptrActual;
+	
+	float pres[cant_nodos];
+	int i = 0; //iterador
+	
+	char programa[2000] = "python3 test_pre.py ";
+	char datos[30];
+	
+	ptrActual = ptrS;
+	ptrAnterior = NULL;
+	
+
+	if(ptrActual != NULL)
+	{
+		
+		while(ptrActual != NULL)
+		{
+			
+			pres[i] = ptrActual->pres;
+			
+			ptrAnterior = ptrActual;
+			ptrActual = ptrAnterior->ptrSig;
+			
+			i++;		
+		}
+							
+	}
+	else
+	{
+		printf("\nNo hay ningun dato que mostrar en el grafico.\n");
+	}
+
+
+	for(int j = 0; j < cant_nodos; j++)
+	{
+		sprintf(datos," %2.2f ",pres[j]);
+		strcat(programa, datos);
+	}	
+
+	system(programa);
+
+
+
+
+}
+
+
+
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
 /*FUNCION QUE NO ME GUSTA*/
@@ -658,7 +821,6 @@ int contar()
 	}
 	else
 	{
-	    fseek(archivo,(n*24), SEEK_SET); //n*24 pq cada linea tiene 24 caracteres
 	    
 	    while((c = getchar()) != EOF)
 		{

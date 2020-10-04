@@ -58,9 +58,9 @@ int main()
 				 printf("SE MUESTRAN LAS OPCIONES NUEVAMENTE\n"); break;
 				 
 				 
-			case 3:   break;
-			case 4:   break;
-			case 5:   break;
+			case 3:  grafico_temp(ptrInicial,11);   break;
+			case 4:  grafico_pres(ptrInicial,11);   break;
+			case 5:  grafico_hum(ptrInicial,11);    break;
 			case 6:   printf("\nCerrando programa...\n"); break;
 						
 			default: ;

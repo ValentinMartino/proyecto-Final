@@ -75,12 +75,35 @@ int archivo_usuario(ptrNodo);
 * funcion archivo_usuario*/
 void mostrar(ptrNodo);
 
+
+/*FUNCION 8:
+*
+* funcion que muestra el grafico de temperatura. */
+
+void grafico_temp(ptrNodo, int);
+
+/*FUNCION 9:
+*
+* funcion que muestra el grafico de humedad. */
+
+void grafico_hum(ptrNodo, int);
+
+/*FUNCION 10:
+*
+* funcion que muestra el grafico de presion. */
+
+void grafico_pres(ptrNodo, int);
+
+
+
+
+
 /* FUNCION QUE NO ME GUSTA:
 *
 * esta funcion cuenta las lineas del archivo datos.txt para 
 * saber cuantas veces llamar a la funcion de crear cola*/
 
-int contar(ptrNodo);
+int contar();
 
 
 
