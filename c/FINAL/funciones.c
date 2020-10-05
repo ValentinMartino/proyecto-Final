@@ -108,7 +108,8 @@ int leer_puerto()
 		if(ban2 == 3)
 		{
 			write (fd , "s", 1);
-			sleep (2);		
+			sleep (2);
+			ban2 = 0;		
 		}		
 	}
 		
@@ -165,6 +166,7 @@ void leer_archivo(ptrNodo *ptrS, int n)
 	if(archivo == NULL )
 	{
 	    	printf("\nno se pudo abrir el archivo");
+	    	
 	}
 	else
 	{
@@ -208,6 +210,7 @@ void leer_archivo(ptrNodo *ptrS, int n)
 					ptrNuevo->hora[3] = arr[3];
 					ptrNuevo->hora[4] = arr[4];
 					ptrNuevo->hora[5] = arr[5];
+					
 				}	
 								
 				ban++;
@@ -619,6 +622,7 @@ void mostrar(ptrNodo ptrS)
 		printf("\nLa mayor presion registrada es %.2f y la ultima hora en la que se registro "
 		       "fue a las %s hs",p_ma, h_p_ma);
 		       
+		
 		       
 		printf("\n\nLa menor temperatura registrada es %.2f y la ultima hora en la que se registro "
 		       "fue a las %s hs",t_me, h_t_me);
@@ -778,8 +782,7 @@ void grafico_pres(ptrNodo ptrS, int cant_nodos)
 			ptrActual = ptrAnterior->ptrSig;
 			
 			i++;		
-		}
-							
+		}							
 	}
 	else
 	{

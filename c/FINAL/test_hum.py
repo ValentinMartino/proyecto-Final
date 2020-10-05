@@ -2,7 +2,7 @@ import sys
 import pylab as pl
 
 arguments = len(sys.argv) - 1
-print ("The script is called with %i arguments" % (arguments))
+print ("Grafico abierto correctamente")
 
 datos = []
 for argument in sys.argv[1:]:
