@@ -38,13 +38,14 @@ int main ( void )
 		return -1;
 	}
 
-	tcflush (fd , TCIOFLUSH);
         
 	int ban = 0;
 	int ban2 = 0;
 	
+	tcflush (fd, TCIOFLUSH);
 	write (fd , "s", 1);
-	sleep (5);
+	sleep (2);
+
 
 	while(ban < 2 )
 	{
@@ -56,52 +57,41 @@ int main ( void )
 		{
 			printf("\nBan = %i",ban);
 			ban = 0;
-			ban2 ++;			
+			ban2++;			
 		}
-		if(ban2 == 1)
+		if(ban2 == 3 && basura != 's')
 		{
 			printf("\nBan2 = %i\n",ban2);
 			write (fd , "s", 1);
-			usleep (2000000);
-			ban2 = 0;		
-		}		
+			sleep (2);		
+		}
+				
 	}
 		
-	// read ( la cantidad de datos tomados)
-	
-	char numero[4];
-	float num;
-	
-	read(fd, numero, 3);
-	num = atof(numero);
-	
-	printf("\nNum = %f \n",num);
-	
-			
-	for (int i = 0; i<(num*3); i++)
+	ban = 0;
+	int cantidad = 0;
+
+	while(ban == 0)
 	{
-       	
- 		if(i%3 == 0 && i != 0)
-		{
-			//fprintf(archivo,"15:24");  
-         		//printf("15:24");
-			
-			printf("\n");
-         		fprintf(archivo, "\n");
-         	}
-         	
-	 	read(fd, leido_1 , 5);
+		read(fd, leido_1 , 5); 
+		
+		if(leido_1[0] == 's' && leido_1[1] == 's')
+			ban++;
+		else
+		{		
+			fprintf(archivo,"%s\t",leido_1);
+	 		printf("%s\t",leido_1);
+	 		cantidad++;
+	 	}
+	}			
 
-
-	 	fprintf(archivo,"%s\t",leido_1);
-	 	printf("%s\t",leido_1); 	
-	}
 	
+
 
 	fclose(archivo); //cerramos el archivo de texto
 	close (fd);
      
 	putchar('\n');
 	
- 	return num;
+ 	return 0;
 }

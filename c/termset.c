@@ -39,6 +39,7 @@ int termset (int fd , int baudrate , struct termios * ttyold ,struct termios * t
 
  ttynew -> c_iflag &= ~ IGNBRK ; // disable break processing
  ttynew -> c_iflag &= ~( IXON | IXOFF | IXANY ); // shut off xon / xoff ctrl
+ /*PRUEBAAAAAAAAAAAAAAAAAAAAA*/// ttynew->c_iflag |= IGNCR;
 
  ttynew -> c_lflag = 0; // no signaling chars , no echo ,
  ttynew -> c_oflag = 0; // no remapping , no delays
