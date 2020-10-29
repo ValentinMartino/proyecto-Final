@@ -77,22 +77,22 @@ int leer_puerto()
 
 	//abrimos el archivo y verificamos que no haya errores
 
-	archivo = fopen("Temperaturas.txt", "w");
+	archivo = fopen("datos.txt", "w");
 		
 	if(archivo == NULL)
 	{
 		printf("\nNo se pudo crear el archivo.\n");
 		return -1;
 	}
-
-	tcflush ( fd , TCIOFLUSH );
+        
+	tcflush (fd , TCIOFLUSH);
         
 	int ban = 0;
 	int ban2 = 0;
 	
 	write (fd , "s", 1);
-	sleep (2);
-	
+	sleep (10);
+
 	while(ban < 2 )
 	{
 		read(fd, &basura, 1);
@@ -101,12 +101,13 @@ int leer_puerto()
 			ban++;
 		else
 		{
-			//printf("\nBan = %i",ban);
+			printf("\nBan = %i",ban);
 			ban = 0;
-			ban2 ++;
+			ban2 ++;			
 		}
-		if(ban2 == 3)
+		if(ban2 == 1)
 		{
+			printf("\nBan2 = %i\n",ban2);
 			write (fd , "s", 1);
 			sleep (2);
 			ban2 = 0;		
@@ -115,31 +116,43 @@ int leer_puerto()
 		
 	// read ( la cantidad de datos tomados)
 	
-
-		
-	for (int i = 0; i<6; i++)
+	char numero[4];
+	float num;
+	
+	read(fd, numero, 3);
+	num = atof(numero);
+	
+	printf("\nNum = %f \n",num);
+	
+			
+	for (int i = 0; i<(num*5); i++)
 	{
        	
  		if(i%4 == 0 && i != 0)
-		{
+		{			
 			printf("\n");
          		fprintf(archivo, "\n");
-         	}         		
+         	}
          	
 	 	read(fd, leido_1 , 5);
 
+
 	 	fprintf(archivo,"%s\t",leido_1);
-	 	printf("%s\t",leido_1);  
-	 		
+	 	printf("%s\t",leido_1); 	
 	}
+	
+	fprintf(archivo,"\n");
+	
 
 	fclose(archivo); //cerramos el archivo de texto
+	
+	write (fd , "r", 1); // le indica al programa en arduino que reinicie sus valores
 	close (fd);
+     
+     
+	putchar('\n');
 	
-	
-	//FALTA EL RETURN DE LA CANTIDAD DE DATOS OBTENIDOS POR LOS SENSORES
-	
-	return 1;
+ 	return (int)num;
 }
 
 /*---------------------------------------------------------------------------------------------------------------------------*/
@@ -170,7 +183,7 @@ void leer_archivo(ptrNodo *ptrS, int n)
 	}
 	else
 	{
-	    fseek(archivo,(n*24), SEEK_SET); //n*24 pq cada linea tiene 24 caracteres
+	    fseek(archivo,(n*30), SEEK_SET); //n*24 pq cada linea tiene 24 caracteres
 	    
 	    while((c = fgetc(archivo)) != '\n')
 	        {
@@ -186,9 +199,10 @@ void leer_archivo(ptrNodo *ptrS, int n)
 	            
 	       		if(i == 5)
 	       		{
-				/*funcion que convierte arr en float*/
-				aux = atof(arr);
-				
+	       			if(ban != 3 || ban != 4)
+					aux = atof(arr);/*funcion que convierte arr en float*/
+					
+									
 				if(ban==0)
 					ptrNuevo->temp = aux;
 						
@@ -203,15 +217,13 @@ void leer_archivo(ptrNodo *ptrS, int n)
 				
 				
 				if(ban==3)
-				{
-					ptrNuevo->hora[0] = arr[0];
-					ptrNuevo->hora[1] = arr[1];
-					ptrNuevo->hora[2] = arr[2];
-					ptrNuevo->hora[3] = arr[3];
-					ptrNuevo->hora[4] = arr[4];
-					ptrNuevo->hora[5] = arr[5];
+					strcpy(ptrNuevo->hora, arr);
 					
-				}	
+					
+				if(ban==4)
+					strcpy(ptrNuevo->fecha, arr);	
+						
+						
 								
 				ban++;
         		}
@@ -380,13 +392,12 @@ int menor_dato(ptrNodo ptrS, int a)
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
 
-
-
 /*FUNCION 6*/
 
 int archivo_usuario(ptrNodo ptrS)
 {
 	FILE *archivo;
+	char nombre[30]; //cadena que va a almacenar el nombre del archivo
 	
 	ptrNodo ptrAnterior;
 	ptrNodo ptrActual;
@@ -394,18 +405,25 @@ int archivo_usuario(ptrNodo ptrS)
 	ptrActual = ptrS;
 	ptrAnterior = NULL;
 	
+	
 	int i = 0; //iterador
 	
 	int t, h, p;       //en estas variables se guarda la posicion del nodo en donde se registro el ultimo MAYOR
 	float t_ma, h_ma, p_ma;       //en estas variables se guarda el ultimo MAYOR dato registrado 
 	char h_t_ma[6], h_h_ma[6], h_p_ma[6];      //en estas cadenas se guarda la hora en donde se registro el ultimo MAYOR
+	char f_t_ma[6], f_h_ma[6], f_p_ma[6];      //en estas cadenas se guarda la fecha en donde se registro el ultimo MAYOR
 	
 	int t2, h2, p2;        //en estas variables se guarda la posicion del nodo en donde se registro el ultimo MENOR
 	float t_me, h_me, p_me;       //en estas variables se guarda el ultimo MENOR dato registrado 
 	char h_t_me[6], h_h_me[6], h_p_me[6];      //en estas cadenas se guarda la hora en donde se registro el ultimo MENOR
+	char f_t_me[6], f_h_me[6], f_p_me[6];      //en estas cadenas se guarda la fecha en donde se registro el ultimo MENOR
 	
 	
-	archivo = fopen("archivoPiola.txt", "w");
+	
+	printf("\nIngrese el nombre que desee ponerle al archivo: ");
+    	scanf("%[^\n]",nombre);
+    			
+	archivo = fopen(nombre, "w");
 		
 	if(archivo == NULL)
 	{
@@ -440,42 +458,49 @@ int archivo_usuario(ptrNodo ptrS)
 				fprintf(archivo,"\t%.2f",ptrActual->hum);
 				fprintf(archivo,"\t%.2f",ptrActual->pres);
 				fprintf(archivo,"\t%s",ptrActual->hora);
+				fprintf(archivo,"\t%s",ptrActual->fecha);
 				
-				if(t == i) //algoritmo para guardar la MAYOR temperatura y hora en su respectiva variable
+				if(t == i)//algoritmo para guardar la MAYOR temperatura, hora y fecha en su respectiva variable
 				{
 					t_ma = ptrActual->temp;
 					strcpy( h_t_ma, ptrActual->hora );
+					strcpy( f_t_ma, ptrActual->fecha );
 				}
 			
-				if(h == i) //algoritmo para guardar la MAYOR humedad y hora en su respectiva variable
+				if(h == i) //algoritmo para guardar la MAYOR humedad, hora y fecha en su respectiva variable
 				{
 					h_ma = ptrActual->hum;
 					strcpy( h_h_ma, ptrActual->hora );
+					strcpy( f_h_ma, ptrActual->fecha );
 				}
 			
-				if(p == i) //algoritmo para guardar la MAYOR presion y hora en su respectiva variable
+				if(p == i) //algoritmo para guardar la MAYOR presion, hora y fecha en su respectiva variable
 				{
 					p_ma = ptrActual->pres;
 					strcpy( h_p_ma, ptrActual->hora );
+					strcpy( f_p_ma, ptrActual->fecha );
 				}
 			
 			
-				if(t2 == i) //algoritmo para guardar la MENOR temperatura y hora en su respectiva variable
+				if(t2 == i)//algoritmo para guardar la MENOR temperatura,hora y fecha en su respectiva variable
 				{
 					t_me = ptrActual->temp;
 					strcpy( h_t_me, ptrActual->hora );
+					strcpy( f_t_me, ptrActual->fecha );
 				}
 			
-				if(h2 == i) //algoritmo para guardar la MENOR humedad y hora en su respectiva variable
+				if(h2 == i) //algoritmo para guardar la MENOR humedad,hora y fecha en su respectiva variable
 				{
 					h_me = ptrActual->hum;
 					strcpy( h_h_me, ptrActual->hora );
+					strcpy( f_h_me, ptrActual->fecha );
 				}
 			
-				if(p2 == i) //algoritmo para guardar la MENOR presion y hora en su respectiva variable
+				if(p2 == i) //algoritmo para guardar la MENOR presion,hora y fecha en su respectiva variable
 				{
 					p_me = ptrActual->pres;
 					strcpy( h_p_me, ptrActual->hora );
+					strcpy( f_p_me, ptrActual->fecha );
 				}
 			
 				ptrAnterior = ptrActual;
@@ -486,23 +511,23 @@ int archivo_usuario(ptrNodo ptrS)
 			
 			
 			fprintf(archivo,"\n\nLa mayor temperatura registrada es %.2f y la ultima hora en la que se registro "
-		     	 		 "fue a las %s hs",t_ma, h_t_ma);
+		     	 		 "fue a las %s hs el dia %s ",t_ma, h_t_ma, f_t_ma);
 		       
 			fprintf(archivo,"\nLa mayor humedad registrada es %.2f y la ultima hora en la que se registro "
-		      		 	"fue a las %s hs",h_ma, h_h_ma);
+		      		 	"fue a las %s hs el dia %s",h_ma, h_h_ma, f_h_ma);
 		
 			fprintf(archivo,"\nLa mayor presion registrada es %.2f y la ultima hora en la que se registro "
-			  		"fue a las %s hs",p_ma, h_p_ma);
+			  		"fue a las %s hs el dia %s",p_ma, h_p_ma, f_p_ma);
 		       
 		       
 			fprintf(archivo,"\n\nLa menor temperatura registrada es %.2f y la ultima hora en la que se registro "
-		       			"fue a las %s hs",t_me, h_t_me);
+		       			"fue a las %s hs el dia %s",t_me, h_t_me, f_t_me);
 		       
 			fprintf(archivo,"\nLa menor humedad registrada es %.2f y la ultima hora en la que se registro "
-		   			"fue a las %s hs",h_me, h_h_me);
+		   			"fue a las %s hs el dia %s",h_me, h_h_me, f_h_me);
 		
 			fprintf(archivo,"\nLa menor presion registrada es %.2f y la ultima hora en la que se registro "
-		       			"fue a las %s hs",p_me, h_p_me);
+		       			"fue a las %s hs el dia %s",p_me, h_p_me, f_p_me);
 		
 
 		
@@ -537,15 +562,17 @@ void mostrar(ptrNodo ptrS)
 	int t, h, p;       //en estas variables se guarda la posicion del nodo en donde se registro el ultimo MAYOR
 	float t_ma, h_ma, p_ma;       //en estas variables se guarda el ultimo MAYOR dato registrado 
 	char h_t_ma[6], h_h_ma[6], h_p_ma[6];      //en estas cadenas se guarda la hora en donde se registro el ultimo MAYOR
+	char f_t_ma[6], f_h_ma[6], f_p_ma[6];      //en estas cadenas se guarda la fecha en donde se registro el ultimo MAYOR
 	
 	int t2, h2, p2;        //en estas variables se guarda la posicion del nodo en donde se registro el ultimo MENOR
 	float t_me, h_me, p_me;       //en estas variables se guarda el ultimo MENOR dato registrado 
 	char h_t_me[6], h_h_me[6], h_p_me[6];      //en estas cadenas se guarda la hora en donde se registro el ultimo MENOR
+	char f_t_me[6], f_h_me[6], f_p_me[6];      //en estas cadenas se guarda la fecha en donde se registro el ultimo MENOR
 	
 	ptrActual = ptrS;
 	ptrAnterior = NULL;
 	
-
+	
 	if(ptrActual != NULL)
 	{
 		printf("\t\tDATOS RECOPILADOS POR LOS SENSORES");
@@ -568,45 +595,52 @@ void mostrar(ptrNodo ptrS)
 			printf("\t%.2f",ptrActual->hum);
 			printf("\t%.2f",ptrActual->pres);
 			printf("\t%s",ptrActual->hora);
+			printf("\t%s",ptrActual->fecha);
 			
-			if(t == i) //algoritmo para guardar la MAYOR temperatura y hora en su respectiva variable
+			if(t == i)//algoritmo para guardar la MAYOR temperatura, hora y fecha en su respectiva variable
 			{
 				t_ma = ptrActual->temp;
 				strcpy( h_t_ma, ptrActual->hora );
+				strcpy( f_t_ma, ptrActual->fecha );
 			}
 			
-			if(h == i) //algoritmo para guardar la MAYOR humedad y hora en su respectiva variable
+			if(h == i) //algoritmo para guardar la MAYOR humedad, hora y fecha en su respectiva variable
 			{
 				h_ma = ptrActual->hum;
 				strcpy( h_h_ma, ptrActual->hora );
+				strcpy( f_h_ma, ptrActual->fecha );
 			}
-			
-			if(p == i) //algoritmo para guardar la MAYOR presion y hora en su respectiva variable
+		
+			if(p == i) //algoritmo para guardar la MAYOR presion, hora y fecha en su respectiva variable
 			{
 				p_ma = ptrActual->pres;
 				strcpy( h_p_ma, ptrActual->hora );
+				strcpy( f_p_ma, ptrActual->fecha );
 			}
 			
 			
-			if(t2 == i) //algoritmo para guardar la MENOR temperatura y hora en su respectiva variable
+			if(t2 == i)//algoritmo para guardar la MENOR temperatura,hora y fecha en su respectiva variable
 			{
 				t_me = ptrActual->temp;
 				strcpy( h_t_me, ptrActual->hora );
+				strcpy( f_t_me, ptrActual->fecha );
 			}
 			
-			if(h2 == i) //algoritmo para guardar la MENOR humedad y hora en su respectiva variable
+			if(h2 == i) //algoritmo para guardar la MENOR humedad,hora y fecha en su respectiva variable
 			{
 				h_me = ptrActual->hum;
 				strcpy( h_h_me, ptrActual->hora );
+				strcpy( f_h_me, ptrActual->fecha );
 			}
 			
-			if(p2 == i) //algoritmo para guardar la MENOR presion y hora en su respectiva variable
+			if(p2 == i) //algoritmo para guardar la MENOR presion,hora y fecha en su respectiva variable
 			{
 				p_me = ptrActual->pres;
 				strcpy( h_p_me, ptrActual->hora );
+				strcpy( f_p_me, ptrActual->fecha );
 			}
 			
-			
+						
 			ptrAnterior = ptrActual;
 			ptrActual = ptrAnterior->ptrSig;
 			
@@ -614,26 +648,23 @@ void mostrar(ptrNodo ptrS)
 		}
 					
 		printf("\n\nLa mayor temperatura registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",t_ma, h_t_ma);
+		     	 		 "fue a las %s hs el dia %s ",t_ma, h_t_ma, f_t_ma);
 		       
 		printf("\nLa mayor humedad registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",h_ma, h_h_ma);
+		      		 	"fue a las %s hs el dia %s",h_ma, h_h_ma, f_h_ma);
 		
 		printf("\nLa mayor presion registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",p_ma, h_p_ma);
+			  		"fue a las %s hs el dia %s",p_ma, h_p_ma, f_p_ma);
 		       
-		
 		       
 		printf("\n\nLa menor temperatura registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",t_me, h_t_me);
+		       			"fue a las %s hs el dia %s",t_me, h_t_me, f_t_me);
 		       
 		printf("\nLa menor humedad registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",h_me, h_h_me);
+		   			"fue a las %s hs el dia %s",h_me, h_h_me, f_h_me);
 		
 		printf("\nLa menor presion registrada es %.2f y la ultima hora en la que se registro "
-		       "fue a las %s hs",p_me, h_p_me);
-		       
-		printf("\n\n\n");
+		       			"fue a las %s hs el dia %s",p_me, h_p_me, f_p_me);
 		
 	}
 	else
@@ -803,41 +834,165 @@ void grafico_pres(ptrNodo ptrS, int cant_nodos)
 
 }
 
-
-
 /*---------------------------------------------------------------------------------------------------------------------------*/
 
-/*FUNCION QUE NO ME GUSTA*/
+/*FUNCION 11*/
 
-int contar()
+int lineas()
 {
 	FILE *archivo; 
 	
-	int lineas = 0;
+	
+	int lineass = 0;
 	char c;
 	
 	/*se abre el archio donde estan guardados los datos obtenidos por los sensores*/
 	archivo = fopen("datos.txt","r"); 
 	if(archivo == NULL )
 	{
-	    	printf("\nno se pudo abrir el archivo");
+	    	printf("\nNo se pudo abrir el archivo");
 	}
 	else
 	{
-	    
-	    while((c = getchar()) != EOF)
+	    while((c = fgetc(archivo)) != EOF)
 		{
+			
 			if(c == '\n')
-				lineas++;
+				lineass++;
 		}
-	
 	}
 
-	return lineas;
+	return lineass;
 }
 
 
+/*---------------------------------------------------------------------------------------------------------------------------*/
 
+/*FUNCION 12*/
+
+void rango(int tipo, int comparacion, int ma_o_me)
+{
+	ptrNodo ptrAnterior;
+	ptrNodo ptrActual;
+	
+	ptrActual = ptrS;
+	ptrAnterior = NULL;
+	
+	if(ma_o_me == 1)	
+		printf("\n\nLOS VALORES QUE ESTAN POR ENCIMA DE %i SON :",comparacion);
+	else
+		printf("\n\nLOS VALORES QUE ESTAN POR DEBAJO DE %i SON :",comparacion);
+	
+	
+	if(ptrActual != NULL)
+	{		
+		while(ptrActual != NULL)
+		{	
+			if(ptrActual->temp		
+			ptrAnterior = ptrActual;
+			ptrActual = ptrAnterior->ptrSig;	
+		}							
+	}
+	else
+	{
+		printf("\nNo hay ningun dato.\n");
+	}	
+
+}
+
+
+/*---------------------------------------------------------------------------------------------------------------------------*/
+
+/*MENU*/
+
+void menu(int cant)
+{
+
+	ptrNodo ptrInicial = NULL;
+	ptrNodo ptrFinal = NULL;
+
+	int opcion; //para manejar las opciones en el do while
+	
+
+	printf("\nCant_nodos = %i \n",cant);
+
+	for(int i = 0; i<cant; i++)
+		ingresar_cola(&ptrInicial, &ptrFinal,i);
+		
+	
+	do{
+		printf("\n1)Ver los datos obtenidos por los sensores."
+		       "\n2)Guardar los datos obtenidos en un archivo."
+		       "\n3)Ver el grafico de temperatura."
+		       "\n4)Ver el grafico de presion."
+		       "\n5)Ver el grafico de humedad.
+		       "\n6)Analisis profundo."
+		       "\n7)Salir.\n");
+	       
+		scanf("%i", &opcion);
+		
+		getchar(); //para el '\n' que queda en el buffer cuando se elije una opcion
+		
+		if(opcion > 7 || opcion < 1)
+			printf("\nEL CARACTER INGRESADO NO CORRESPONDE A UNA OPCION VALIDA. INTENTELO DE NUEVO.\n");
+		
+		switch(opcion)
+		{
+			case 1:  mostrar(ptrInicial);  printf("SE MUESTRAN LAS OPCIONES NUEVAMENTE\n");        break;
+			
+			case 2:  if(archivo_usuario(ptrInicial) == 1)
+					printf("\nArchivo guardado correctamente.\n\n");
+				
+				 printf("SE MUESTRAN LAS OPCIONES NUEVAMENTE\n"); break;
+				 
+				 
+			case 3:  grafico_temp(ptrInicial,cant);   break;
+			case 4:  grafico_pres(ptrInicial,cant);   break;
+			case 5:  grafico_hum(ptrInicial,cant);    break;
+			
+			case 6:  do{ 	int op;
+					int num;
+					char val;
+					
+				 	printf("\n\t¿Que desea analizar?\n\t1)Temperatura.\n\t2)Presion.\n\t3)Humedad.\n");
+				 	scanf("%i",&op);
+				 	
+				 	getchar(); //para el '\n' que queda en el buffer cuando se elije una opcion
+				 	
+				 	if(op > 3 || op < 1)
+					printf("\n\tCARACTER INVALIDO. INTENTELO DE NUEVO.\n");
+					
+					printf("\n\t\tIngrese el numero con el cual va a comprar los valores:");
+					scanf("%i",&num);
+					
+					printf("\n\t\tPresione 'u' para ver los valores por encima del valor ingresado
+					       " y 'd' para ver los valores por debajo del valor ingresado: ");
+					scanf("%c",&val);
+					
+					if(op >=1 && op <= 3) //si la opcion ingresada es la correcta
+					{
+					
+						if(val == 'u')
+							rango(op,num, 1);
+						else 
+							rango(op, num, 0);
+					}
+					
+					
+				}while(op != 3);
+				 
+			
+			
+			
+			case 7: printf("\nCerrando programa...\n"); break;
+						
+			default: ;
+		}
+		
+		}while(opcion != 7);
+
+
+}
 
 
 

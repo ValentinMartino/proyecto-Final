@@ -44,7 +44,7 @@ int main ( void )
 	int ban2 = 0;
 	
 	write (fd , "s", 1);
-	sleep (5);
+	sleep (10);
 
 	while(ban < 2 )
 	{
@@ -78,13 +78,11 @@ int main ( void )
 	printf("\nNum = %f \n",num);
 	
 			
-	for (int i = 0; i<(num*3); i++)
+	for (int i = 0; i<(num*4); i++)
 	{
        	
- 		if(i%3 == 0 && i != 0)
+ 		if(i%4 == 0 && i != 0)
 		{
-			//fprintf(archivo,"15:24");  
-         		//printf("15:24");
 			
 			printf("\n");
          		fprintf(archivo, "\n");
@@ -103,5 +101,5 @@ int main ( void )
      
 	putchar('\n');
 	
- 	return num;
+ 	return 0;
 }

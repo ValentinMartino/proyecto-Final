@@ -7,6 +7,7 @@ float temp;
 float hum;
 float pres;
 char hora[6]; 
+char fecha[6];
 
 struct nodo *ptrSig;
 
@@ -94,18 +95,42 @@ void grafico_hum(ptrNodo, int);
 
 void grafico_pres(ptrNodo, int);
 
-
-
-
-
-/* FUNCION QUE NO ME GUSTA:
+/* FUNCION 11:
 *
 * esta funcion cuenta las lineas del archivo datos.txt para 
 * saber cuantas veces llamar a la funcion de crear cola*/
 
-int contar();
+int lineas();
+
+/*FUNCION 12
+
+* funcion que encuentra valores establecidos por el usuario
+* esta funcion recibe un entero que determina si va a comparar
+* la presion, la temperatura o la humedad. Otro entero que es
+* el valor que va a compara, y un 0 si va a comparar para abajo
+* o un 1 si va a comparar para arriba.*/
+
+void rangos(int, int, int);
+
+/*MENU
+
+* recibe un numero entero de la cantidad de nodos que 
+* va a haber*/
+
+void menu(int);
 
 
+
+
+
+
+
+
+/*COLORES EN LA TERMINAL*/
+
+#define FONDO_BLANCO "\e[107m"
+
+#define LETRA_NEGRA "\033[22;30m"
 
 #endif
 

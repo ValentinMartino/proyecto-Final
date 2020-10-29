@@ -6,9 +6,11 @@
 int main ( void )
 {
   int fd ; /* Descriptor de archivo del puerto */
-  char leido_1 [8];
+  char leido_1 [8]; /*caracter para tomar los datos obtenidos del puerto serie*/
+
+  FILE *archivo;
   
-  struct termios oldtty , newtty ;
+  struct termios oldtty , newtty ; //termset.h
   
 
   fd = open ("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NDELAY );
@@ -23,18 +25,40 @@ int main ( void )
       printf (" ERROR : no se pudo configurar el TTY \n");
       return -1;
     }
-  
+
+     //abrimos el archivo y verificamos que no haya errores
+
+     archivo = fopen("Temperaturas.txt", "w");
+		
+     if(archivo == NULL)
+       {
+	 printf("\nNo se pudo crear el archivo.\n");
+	 return 1;
+       }
+
+     
   tcflush ( fd , TCIOFLUSH );
+
+  //ciclo infinito
   for (;;)
     {
       read(fd, leido_1, 8);
+
+      //ingresamos las temperaturas al archivo de texto que creamos
+      fprintf(archivo,"A continuacion se muestran las temperaturas listadas");
+      fprintf(archivo,"\n- %s ", leido_1);
       
       printf("\ntemp = %s ",leido_1);
       
       tcdrain (fd);
+
+      if(getchar() == 's')
+	return 0;
+      
       sleep (5);
     }
 
+  fclose(archivo); //cerramos el archivo de texto
   close (fd);
   return 0;
 }

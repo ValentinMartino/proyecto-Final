@@ -4,22 +4,31 @@ A continuacion se muestra una tabla con todos los resultados:
 
 TEMP	HUM	PRES	HORA
 
-28.50	23.64	15.20	16:00
-27.30	99.99	13.20	16:10
-28.50	23.64	15.20	16:00
-27.30	15.24	13.20	16:10
-28.50	13.60	15.20	16:00
-22.30	45.20	13.20	16:10
-44.50	53.60	15.20	18:50
-23.30	75.27	13.20	16:10
-24.50	83.60	88.20	23:00
-27.30	95.20	13.20	16:10
-25.50	23.62	15.20	16:00
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.58	26.76	41.17	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.50	26.65	41.00	15:50
+20.42	26.54	40.83	15:50
 
-La mayor temperatura registrada es 44.50 y la ultima hora en la que se registro fue a las 18:50 hs
-La mayor humedad registrada es 99.99 y la ultima hora en la que se registro fue a las 16:10 hs
-La mayor presion registrada es 88.20 y la ultima hora en la que se registro fue a las 23:00 hs
+La mayor temperatura registrada es 20.58 y la ultima hora en la que se registro fue a las 15:50 hs
+La mayor humedad registrada es 26.76 y la ultima hora en la que se registro fue a las 15:50 hs
+La mayor presion registrada es 41.17 y la ultima hora en la que se registro fue a las 15:50 hs
 
-La menor temperatura registrada es 22.30 y la ultima hora en la que se registro fue a las 16:10 hs
-La menor humedad registrada es 13.60 y la ultima hora en la que se registro fue a las 16:00 hs
-La menor presion registrada es 13.20 y la ultima hora en la que se registro fue a las 16:10 hs
+La menor temperatura registrada es 20.42 y la ultima hora en la que se registro fue a las 15:50 hs
+La menor humedad registrada es 26.54 y la ultima hora en la que se registro fue a las 15:50 hs
+La menor presion registrada es 40.83 y la ultima hora en la que se registro fue a las 15:50 hs
